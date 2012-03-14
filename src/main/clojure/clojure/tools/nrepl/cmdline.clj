@@ -71,13 +71,14 @@
 (defn -main
   [& args]
   (let [[options args] (split-args args)
-        [ssocket _] (start-server (Integer/parseInt (or (options "--port") "0")))]
-    (when-let [ack-port (options "--ack")]
-      (binding [*out* *err*]
-        (println (format "ack'ing my port %d to other server running on port %s"
-                   (.getLocalPort ssocket) ack-port)
-          (:status (send-ack (.getLocalPort ssocket) (Integer/parseInt ack-port))))))
-    (if (options "--interactive")
-      (run-repl (.getLocalPort ssocket) (when (options "--color") colored-output))
+        ;[ssocket _] (start-server (Integer/parseInt (or (options "--port") "0")))]
+        server         (start-server :port (Integer/parseInt (or (options "--port") "0")))]
+    ;(when-let [ack-port (options "--ack")]
+    ;  (binding [*out* *err*]
+    ;    (println (format "ack'ing my port %d to other server running on port %s"
+    ;               (.getLocalPort ssocket) ack-port)
+    ;      (:status (send-ack (.getLocalPort ssocket) (Integer/parseInt ack-port))))))
+    ;(if (options "--interactive")
+    ;  (run-repl (.getLocalPort ssocket) (when (options "--color") colored-output))
       ; need to hold process open with a non-daemon thread -- this should end up being super-temporary
-      (Thread/sleep Long/MAX_VALUE))))
+      (Thread/sleep Long/MAX_VALUE)));)
